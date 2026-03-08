@@ -1,0 +1,61 @@
+/* Login Page Styles */
+.login-page {
+    min-height: 100vh;
+    background: #f0f4f8;
+    padding: 40px;
+}
+
+.login-container {
+    max-width: 900px;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+/* Info Section - left side */
+.info-section {
+    background: #2980b9; /* Main website blue color */
+    color: white;
+}
+
+.info-section h2 {
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.info-section ul {
+    list-style: disc;
+    padding-left: 20px;
+}
+
+.info-section a {
+    text-decoration: underline;
+}
+
+/* Form Section - right side */
+.form-section {
+    background: #fff;
+}
+
+.form-section h2 {
+    color: #2c3e50;
+}
+
+.form-control {
+    border-radius: 5px;
+    border: 1.5px solid #bdc3c7;
+}
+
+.form-control:focus {
+    border-color: #2980b9;
+    box-shadow: 0 0 5px rgba(41, 128, 185, 0.3);
+}
+
+.btn-primary {
+    background-color: #2980b9;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #1f6391;
+}

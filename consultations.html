@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Consultations</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+
+<!-- Navbar Same As Index -->
+<nav class="navbar navbar-expand-lg navbar-dark nav-back fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="index.html">Medical</a>
+
+        <div class="ml-auto">
+            <a href="index.html" class="btn btn-light mr-2">Home</a>
+            <a href="book-appointment.html" class="btn btn-success mr-2">Book Appointment</a>
+            <a href="login.html" class="btn btn-primary">Login</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-5 pt-5">
+    <div class="consultation-container p-4 shadow">
+
+        <h2 class="text-center my-4">Find Consultation</h2>
+
+        <form id="consultForm">
+
+            <div class="form-group row">
+                <label class="col-sm-4">Patient Name</label>
+                <div class="col-sm-8">
+                    <input type="text" id="patient-name" class="form-control" required>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-4">Contact</label>
+                <div class="col-sm-8">
+                    <input type="tel" id="contact" class="form-control" required>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-4">Date</label>
+                <div class="col-sm-8">
+                    <input type="date" id="date" class="form-control" required>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-4">Time</label>
+                <div class="col-sm-8">
+                    <input type="time" id="time" class="form-control" required>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-4">Symptoms</label>
+                <div class="col-sm-8">
+                    <textarea id="symptoms" class="form-control" required></textarea>
+                </div>
+            </div>
+
+            <div class="form-group row justify-content-end">
+                <div class="col-sm-4">
+                    <button type="submit" class="btn btn-success btn-block">
+                        Confirm
+                    </button>
+                </div>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+<script>
+document.getElementById("consultForm").addEventListener("submit", function(e){
+    e.preventDefault();
+
+    alert("Consultation Booked Successfully!");
+
+    window.location.href = "index.html";
+});
+</script>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+</body>
+</html>

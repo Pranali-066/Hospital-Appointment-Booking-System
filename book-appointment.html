@@ -1,0 +1,233 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Book Appointment - Hospital</title>
+
+<link rel="stylesheet" href="main.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+</head>
+
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+
+<div class="container">
+
+<a class="navbar-brand" href="index.html">Medical</a>
+
+<div class="ml-auto">
+<a href="login.html" class="btn btn-primary mr-2">Login</a>
+<a href="register.html" class="btn btn-success">Register</a>
+</div>
+
+</div>
+
+</nav>
+
+
+<!-- Header -->
+<section class="text-center mt-5">
+
+<h2>Book Appointment</h2>
+<p>Select doctor, date and available time slot</p>
+
+<a href="index.html" class="btn btn-secondary mt-3">
+⬅ Back to Home
+</a>
+
+</section>
+
+
+<!-- Booking Form -->
+<div class="container mt-4">
+
+<div class="row justify-content-center">
+
+<div class="col-md-6">
+
+<div class="card p-4 shadow">
+
+<form id="appointmentForm">
+
+<div class="form-group">
+<label>Specialty</label>
+
+<select id="specialty" class="form-control" required>
+<option value="">Select Specialty</option>
+<option value="cardiology">Cardiology</option>
+<option value="neurology">Neurology</option>
+<option value="orthopedics">Orthopedics</option>
+<option value="pediatrics">Pediatrics</option>
+</select>
+</div>
+
+
+<div class="form-group">
+<label>Select Doctor</label>
+
+<select id="doctor" class="form-control" required>
+<option value="">Select Doctor</option>
+</select>
+
+</div>
+
+
+<!-- NEW DATE FIELD -->
+<div class="form-group">
+
+<label>Select Date</label>
+
+<input type="date" id="appointmentDate" class="form-control" required>
+
+</div>
+
+
+<div class="form-group">
+
+<label>Select Time Slot</label>
+
+<div id="timeSlots"></div>
+
+</div>
+
+
+<button type="submit" class="btn btn-success btn-block">
+Book Appointment
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<script>
+
+const doctors = {
+
+cardiology:["Dr. Smith","Dr. Johnson"],
+neurology:["Dr. Brown","Dr. Davis"],
+orthopedics:["Dr. Wilson","Dr. Lee"],
+pediatrics:["Dr. Taylor","Dr. Anderson"]
+
+};
+
+
+const timeSlots = {
+
+"Dr. Smith":["9:00 AM","10:00 AM"],
+"Dr. Johnson":["11:00 AM","12:00 PM"],
+"Dr. Brown":["9:30 AM","10:30 AM"],
+"Dr. Davis":["11:30 AM","12:30 PM"],
+"Dr. Wilson":["9:00 AM","10:00 AM"],
+"Dr. Lee":["11:00 AM","12:00 PM"],
+"Dr. Taylor":["9:30 AM","10:30 AM"],
+"Dr. Anderson":["11:30 AM","12:30 PM"]
+
+};
+
+
+const specialty = document.getElementById("specialty");
+const doctor = document.getElementById("doctor");
+const timeSlotsDiv = document.getElementById("timeSlots");
+
+
+specialty.addEventListener("change",function(){
+
+doctor.innerHTML='<option value="">Select Doctor</option>';
+timeSlotsDiv.innerHTML="";
+
+const selectedSpecialty = this.value;
+
+if(doctors[selectedSpecialty]){
+
+doctors[selectedSpecialty].forEach(function(doc){
+
+const option=document.createElement("option");
+
+option.value=doc;
+option.textContent=doc;
+
+doctor.appendChild(option);
+
+});
+
+}
+
+});
+
+
+doctor.addEventListener("change",function(){
+
+timeSlotsDiv.innerHTML="";
+
+const selectedDoctor=this.value;
+
+if(timeSlots[selectedDoctor]){
+
+timeSlots[selectedDoctor].forEach(function(slot){
+
+const btn=document.createElement("button");
+
+btn.type="button";
+btn.className="btn btn-outline-primary m-1 slot";
+
+btn.textContent=slot;
+
+btn.onclick=function(){
+
+document.querySelectorAll(".slot").forEach(b=>b.classList.remove("active"));
+
+btn.classList.add("active");
+
+}
+
+timeSlotsDiv.appendChild(btn);
+
+});
+
+}
+
+});
+
+
+document.getElementById("appointmentForm").addEventListener("submit",function(e){
+
+e.preventDefault();
+
+const selectedDoctor=doctor.value;
+const selectedDate=document.getElementById("appointmentDate").value;
+const selectedSlot=document.querySelector(".slot.active");
+
+if(!selectedDoctor || !selectedDate || !selectedSlot){
+
+alert("Please select doctor, date and time slot");
+return;
+
+}
+
+alert("Appointment booked successfully with "
++ selectedDoctor +
+" on " + selectedDate +
+" at " + selectedSlot.textContent);
+
+});
+
+</script>
+
+</body>
+</html>
+```

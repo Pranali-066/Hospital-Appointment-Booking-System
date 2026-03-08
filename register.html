@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Create Account - Hospital</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+
+<body class="bg-light">
+
+<!-- Navbar -->
+<nav class="navbar navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="index.html">Medical</a>
+        <a href="index.html" class="btn btn-secondary">← Back</a>
+    </div>
+</nav>
+
+<!-- Register Form -->
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+
+            <div class="card shadow">
+                <div class="card-header text-center bg-warning">
+                    <h4>Create Account</h4>
+                </div>
+
+                <div class="card-body">
+
+                    <form id="registerForm">
+
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" class="form-control" id="name" placeholder="Enter your full name" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Phone Number</label>
+                            <input type="text" class="form-control" id="phone" placeholder="Enter your phone number" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" class="form-control" id="password" placeholder="Enter a password" required>
+                        </div>
+
+                        <button type="submit" class="btn btn-success btn-block">
+                            Register
+                        </button>
+
+                        <div class="text-center mt-3">
+                            Already have an account? <a href="login.html">Login Here</a>
+                        </div>
+
+                        <!-- Success message -->
+                        <div id="successMsg" class="alert alert-success mt-3 text-center" style="display:none;">
+                            Registration Successful! You can now login.
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById("registerForm").addEventListener("submit", function(e){
+    e.preventDefault();
+
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const password = document.getElementById("password").value.trim();
+
+    if(name === "" || email === "" || phone === "" || password === ""){
+        alert("Please fill all fields");
+        return;
+    }
+
+    // Get existing users array or empty
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+
+    // Check if email already exists
+    if(users.some(u => u.email === email)){
+        alert("Email already registered. Please login.");
+        return;
+    }
+
+    // Add new user to users array
+    users.push({
+        name: name,
+        email: email,
+        phone: phone,
+        password: password
+    });
+
+    // Save back to localStorage
+    localStorage.setItem("users", JSON.stringify(users));
+
+    // Show success message
+    document.getElementById("successMsg").style.display = "block";
+
+    // Clear form
+    document.getElementById("registerForm").reset();
+});
+</script>
+
+</body>
+</html>
