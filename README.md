@@ -313,7 +313,6 @@ Started learning Flask
 Next Plan:
 Setup backend
 GAP
-31 March 2026
-Work Done:
+31 March 2026:
 Working on improving backend connection
 Trying to make booking system fully functional
