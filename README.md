@@ -249,4 +249,71 @@ It improves hospital management by organizing patient and appointment data.
 Yadav, “Online Patients Appointment Platform,” IJRASET, 2022.
 2. Akinode John Lekan and Oloruntoba S. A., “Design and Implementation of a
 Patient Appointment and Scheduling System,” IARJSET, 2017.
-                                                         
+
+
+
+
+
+
+
+
+
+
+📘 Updated Logbook (With Your Real Start Date)
+07 February 2026
+Finalized project idea (Hospital Appointment Booking System)
+Discussed with project guide
+09 February 2026
+Collected project requirements
+Decided main features (Login, Doctor List, Appointment Booking)
+11 February 2026
+Created project folder structure
+Started basic HTML pages
+⏸️ Gap (12–16 February)
+(Busy with lectures / other academic work)
+17 February 2026
+Designed Home Page UI
+Added navigation bar
+19 February 2026
+Created Login & Registration pages
+Added CSS styling
+21 February 2026
+Designed Doctor Listing page
+Added doctor details
+⏸️ Gap (22–26 February)
+(Internal exams / assignments)
+27 February 2026
+Created Appointment Booking page
+Added date selection feature
+ 01 March 2026
+Added time slot selection (static)
+Improved UI design
+ 03 March 2026
+Faced issue with time slots not displaying properly
+Debugged JavaScript
+⏸️ Gap (04–08 March)
+(Learning backend / other work)
+09 March 2026
+Fixed time slot issue
+Improved booking logic
+12 March 2026
+Started backend using Flask
+Created basic routes
+Work Done:
+Completed frontend development using HTML and CSS
+Designed appointment booking page and user interface
+15 March 2026
+Work Done:
+Completed frontend (HTML, CSS)
+Designed appointment booking page
+Problem:
+Backend not connected
+Solution:
+Started learning Flask
+Next Plan:
+Setup backend
+GAP
+31 March 2026
+Work Done:
+Working on improving backend connection
+Trying to make booking system fully functional
