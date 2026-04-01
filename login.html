@@ -79,11 +79,13 @@ return user.email === email && user.password === password;
 
 if(validUser){
 
-localStorage.setItem("loggedUser", JSON.stringify(validUser));
+// ✅ SAVE LOGIN (IMPORTANT)
+localStorage.setItem("loggedInUser", validUser.email);
 
 alert("Login Successful! Welcome " + validUser.name);
 
-window.location.href = "index.html";
+// ✅ REDIRECT TO BOOKING PAGE
+window.location.href = "booking-appointment.html";
 
 }
 else{
@@ -93,6 +95,11 @@ alert("Invalid Email or Password");
 }
 
 });
+
+</script>
+
+</body>
+</html>
 
 </script>
 
