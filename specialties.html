@@ -1,131 +1,145 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Doctor Specialties - Hospital Appointment Booking</title>
-    <link rel="stylesheet" href="main.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Doctors Information</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f4f6f9;
+        color: #333;
+    }
+
+    h3 {
+        font-weight: bold;
+        color: #007bff;
+    }
+
+    .specialty-card {
+        margin-bottom: 30px;
+        border-radius: 10px;
+        border: 1px solid #e0e0e0;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        background-color: #fff;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .specialty-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+
+    .specialty-card h5 {
+        border-bottom: 2px solid #007bff;
+        padding-bottom: 5px;
+        margin-bottom: 15px;
+    }
+
+    .doctor-card {
+        margin-bottom: 15px;
+        padding: 15px;
+        border-left: 4px solid #007bff;
+        background-color: #f8f9fa;
+        border-radius: 5px;
+        transition: background-color 0.2s;
+    }
+
+    .doctor-card:hover {
+        background-color: #e9f2ff;
+    }
+
+    .doctor-card h6 {
+        font-weight: 600;
+        color: #0056b3;
+    }
+
+    .doctor-card p {
+        margin: 2px 0;
+        font-size: 0.9rem;
+    }
+
+    /* Back button styling */
+    .back-btn {
+        margin-bottom: 20px;
+    }
+
+    /* Responsive spacing */
+    @media(max-width:768px){
+        .col-md-6 {
+            margin-bottom: 20px;
+        }
+    }
+</style>
 </head>
 <body>
 
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg nav-back fixed-top" id="mainNav">
-        <div class="container">
-            <a class="navbar-brand" href="index.html">Medical</a>
-            <button class="navbar-toggler navbar-toggler-right" type="button"
-                    data-toggle="collapse" data-target="#navbarResponsive" 
-                    aria-controls="navbarResponsive" aria-expanded="false" 
-                    aria-label="Toggle navigation">
-                <i class="fas fa-syringe fa-2x"></i>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item"><a class="nav-link" href="index.html#services">Services</a></li>
-                    <li class="nav-item"><a class="nav-link" href="index.html#about">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="index.html#medical-camps">Medical Camps</a></li>
-                    <li class="nav-item"><a class="nav-link" href="index.html#contact">Contact</a></li>
-                    <li class="nav-item"><a class="nav-link btn btn-primary text-white ml-2" href="login.html">Login</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+<div class="container mt-5">
+    <!-- Back to Home Button -->
+    <a href="index.html" class="btn btn-primary back-btn">
+        &larr; Back to Home
+    </a>
 
-    <!-- Page Header -->
-    <section class="page-header text-center py-5 bg-light mt-5">
-        <div class="container">
-            <h1>Our Doctor Specialties</h1>
-            <p>Find the right specialist for your medical needs</p>
-        </div>
-    </section>
+    <h3 class="text-center mb-4">Our Doctors</h3>
+    <div id="specialtyContainer" class="row">
+        <!-- Specialty cards will appear here -->
+    </div>
+</div>
 
-    <!-- Specialties Section -->
-    <section class="specialities py-5">
-        <div class="container">
-            <div class="row">
+<script>
+// Doctors data with details
+const doctorsData = {
+    "Cardiology": [
+        { name: "Dr. Smith", phone: "9876543210", age: 45, email: "smith@hospital.com", degree: "MD Cardiology" },
+        { name: "Dr. Johnson", phone: "9876543211", age: 50, email: "johnson@hospital.com", degree: "DM Cardiology" }
+    ],
+    "Neurology": [
+        { name: "Dr. Brown", phone: "9876543212", age: 42, email: "brown@hospital.com", degree: "MD Neurology" },
+        { name: "Dr. Davis", phone: "9876543213", age: 48, email: "davis@hospital.com", degree: "DM Neurology" }
+    ],
+    "Orthopedics": [
+        { name: "Dr. Wilson", phone: "9876543214", age: 40, email: "wilson@hospital.com", degree: "MS Orthopedics" },
+        { name: "Dr. Lee", phone: "9876543215", age: 38, email: "lee@hospital.com", degree: "MS Orthopedics" }
+    ],
+    "Pediatrics": [
+        { name: "Dr. Taylor", phone: "9876543216", age: 35, email: "taylor@hospital.com", degree: "MD Pediatrics" },
+        { name: "Dr. Anderson", phone: "9876543217", age: 39, email: "anderson@hospital.com", degree: "MD Pediatrics" }
+    ]
+};
 
-                <!-- Example Specialty Card -->
-                <div class="col-md-4 mb-4">
-                    <div class="card shadow-sm h-100">
-                        <div class="card-body text-center">
-                            <i class="fas fa-heartbeat fa-3x mb-3 text-primary"></i>
-                            <h5 class="card-title">Cardiology</h5>
-                            <p class="card-text">Heart specialists for preventive care, diagnostics, and treatment.</p>
-                            <a href="#" class="btn btn-outline-primary">View Doctors</a>
-                        </div>
-                    </div>
-                </div>
+// Render specialties and doctors
+const container = document.getElementById("specialtyContainer");
 
-                <div class="col-md-4 mb-4">
-                    <div class="card shadow-sm h-100">
-                        <div class="card-body text-center">
-                            <i class="fas fa-brain fa-3x mb-3 text-primary"></i>
-                            <h5 class="card-title">Neurology</h5>
-                            <p class="card-text">Specialists in brain and nervous system disorders.</p>
-                            <a href="#" class="btn btn-outline-primary">View Doctors</a>
-                        </div>
-                    </div>
-                </div>
+for (const specialty in doctorsData) {
+    const col = document.createElement("div");
+    col.className = "col-md-6";
 
-                <div class="col-md-4 mb-4">
-                    <div class="card shadow-sm h-100">
-                        <div class="card-body text-center">
-                            <i class="fas fa-bone fa-3x mb-3 text-primary"></i>
-                            <h5 class="card-title">Orthopedics</h5>
-                            <p class="card-text">Bone and joint specialists for injuries and disorders.</p>
-                            <a href="#" class="btn btn-outline-primary">View Doctors</a>
-                        </div>
-                    </div>
-                </div>
+    const card = document.createElement("div");
+    card.className = "card specialty-card p-3";
 
-                <div class="col-md-4 mb-4">
-                    <div class="card shadow-sm h-100">
-                        <div class="card-body text-center">
-                            <i class="fas fa-lungs fa-3x mb-3 text-primary"></i>
-                            <h5 class="card-title">Pulmonology</h5>
-                            <p class="card-text">Specialists in respiratory system health and treatments.</p>
-                            <a href="#" class="btn btn-outline-primary">View Doctors</a>
-                        </div>
-                    </div>
-                </div>
+    const title = document.createElement("h5");
+    title.textContent = specialty;
+    card.appendChild(title);
 
-                <div class="col-md-4 mb-4">
-                    <div class="card shadow-sm h-100">
-                        <div class="card-body text-center">
-                            <i class="fas fa-user-md fa-3x mb-3 text-primary"></i>
-                            <h5 class="card-title">General Medicine</h5>
-                            <p class="card-text">Primary care physicians for routine check-ups and preventive care.</p>
-                            <a href="#" class="btn btn-outline-primary">View Doctors</a>
-                        </div>
-                    </div>
-                </div>
+    doctorsData[specialty].forEach(doc => {
+        const docCard = document.createElement("div");
+        docCard.className = "doctor-card";
+        docCard.innerHTML = `
+            <h6>${doc.name}</h6>
+            <p><strong>Specialty:</strong> ${specialty}</p>
+            <p><strong>Phone:</strong> ${doc.phone}</p>
+            <p><strong>Age:</strong> ${doc.age}</p>
+            <p><strong>Email:</strong> ${doc.email}</p>
+            <p><strong>Degree:</strong> ${doc.degree}</p>
+        `;
+        card.appendChild(docCard);
+    });
 
-                <div class="col-md-4 mb-4">
-                    <div class="card shadow-sm h-100">
-                        <div class="card-body text-center">
-                            <i class="fas fa-child fa-3x mb-3 text-primary"></i>
-                            <h5 class="card-title">Pediatrics</h5>
-                            <p class="card-text">Specialized care for infants, children, and adolescents.</p>
-                            <a href="#" class="btn btn-outline-primary">View Doctors</a>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer py-4 mt-5 bg-light">
-        <div class="container text-center">
-            &copy; 2026 Hospital Appointment Booking System
-        </div>
-    </footer>
-
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    col.appendChild(card);
+    container.appendChild(col);
+}
+</script>
 
 </body>
 </html>
