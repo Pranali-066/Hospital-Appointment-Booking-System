@@ -1,233 +1,236 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Book Appointment</title>
 
-<title>Book Appointment - Hospital</title>
-
-<link rel="stylesheet" href="main.css">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+<style>
+.slot.active{
+    background-color: green;
+    color: white;
+}
+</style>
 
 </head>
 
 <body>
 
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-
-<div class="container">
-
-<a class="navbar-brand" href="index.html">Medical</a>
-
-<div class="ml-auto">
-<a href="login.html" class="btn btn-primary mr-2">Login</a>
-<a href="register.html" class="btn btn-success">Register</a>
-</div>
-
-</div>
-
+<!-- 🔥 NAVBAR WITH BACK BUTTON -->
+<nav class="navbar navbar-dark bg-dark">
+    <a href="index.html" class="btn btn-light">⬅ Back to Home</a>
+    <span class="navbar-brand mx-auto">Hospital Booking</span>
 </nav>
 
+<div class="container mt-5">
 
-<!-- Header -->
-<section class="text-center mt-5">
-
-<h2>Book Appointment</h2>
-<p>Select doctor, date and available time slot</p>
-
-<a href="index.html" class="btn btn-secondary mt-3">
-⬅ Back to Home
-</a>
-
-</section>
-
-
-<!-- Booking Form -->
-<div class="container mt-4">
+<h3 class="text-center">Book Appointment</h3>
 
 <div class="row justify-content-center">
-
 <div class="col-md-6">
 
-<div class="card p-4 shadow">
+<div class="card p-4">
 
 <form id="appointmentForm">
 
-<div class="form-group">
-<label>Specialty</label>
+<!-- ✅ PATIENT NAME -->
+<input type="text" id="name" class="form-control mb-3" placeholder="Enter Patient Name" required>
 
-<select id="specialty" class="form-control" required>
+<select id="specialty" class="form-control mb-3" required>
 <option value="">Select Specialty</option>
 <option value="cardiology">Cardiology</option>
 <option value="neurology">Neurology</option>
 <option value="orthopedics">Orthopedics</option>
 <option value="pediatrics">Pediatrics</option>
 </select>
-</div>
 
-
-<div class="form-group">
-<label>Select Doctor</label>
-
-<select id="doctor" class="form-control" required>
+<select id="doctor" class="form-control mb-3" required>
 <option value="">Select Doctor</option>
 </select>
 
-</div>
+<input type="date" id="date" class="form-control mb-3" required>
 
+<div id="slots"></div>
 
-<!-- NEW DATE FIELD -->
-<div class="form-group">
-
-<label>Select Date</label>
-
-<input type="date" id="appointmentDate" class="form-control" required>
-
-</div>
-
-
-<div class="form-group">
-
-<label>Select Time Slot</label>
-
-<div id="timeSlots"></div>
-
-</div>
-
-
-<button type="submit" class="btn btn-success btn-block">
-Book Appointment
-</button>
+<button class="btn btn-success btn-block mt-3">Book Appointment</button>
 
 </form>
 
 </div>
-
+</div>
 </div>
 
 </div>
-
-</div>
-
-
 
 <script>
 
+// DATA
 const doctors = {
-
 cardiology:["Dr. Smith","Dr. Johnson"],
 neurology:["Dr. Brown","Dr. Davis"],
 orthopedics:["Dr. Wilson","Dr. Lee"],
 pediatrics:["Dr. Taylor","Dr. Anderson"]
-
 };
 
-
-const timeSlots = {
-
-"Dr. Smith":["9:00 AM","10:00 AM"],
-"Dr. Johnson":["11:00 AM","12:00 PM"],
-"Dr. Brown":["9:30 AM","10:30 AM"],
-"Dr. Davis":["11:30 AM","12:30 PM"],
-"Dr. Wilson":["9:00 AM","10:00 AM"],
-"Dr. Lee":["11:00 AM","12:00 PM"],
-"Dr. Taylor":["9:30 AM","10:30 AM"],
-"Dr. Anderson":["11:30 AM","12:30 PM"]
-
+const slotsData = {
+"Dr. Smith":["9AM","10AM","11AM","12PM"],
+"Dr. Johnson":["1PM","2PM","3PM"],
+"Dr. Brown":["9:30AM","10:30AM","11:30AM"],
+"Dr. Davis":["12PM","1PM","2PM"],
+"Dr. Wilson":["9AM","10AM","11AM"],
+"Dr. Lee":["12PM","1PM","2PM"],
+"Dr. Taylor":["9:30AM","10:30AM"],
+"Dr. Anderson":["11:30AM","12:30PM"]
 };
-
 
 const specialty = document.getElementById("specialty");
 const doctor = document.getElementById("doctor");
-const timeSlotsDiv = document.getElementById("timeSlots");
+const dateInput = document.getElementById("date");
+const slots = document.getElementById("slots");
 
+// BLOCK PAST DATE
+const today = new Date().toISOString().split("T")[0];
+dateInput.setAttribute("min", today);
 
-specialty.addEventListener("change",function(){
+// LOAD DOCTORS
+specialty.addEventListener("change", function(){
+doctor.innerHTML = '<option value="">Select Doctor</option>';
+slots.innerHTML = "";
 
-doctor.innerHTML='<option value="">Select Doctor</option>';
-timeSlotsDiv.innerHTML="";
-
-const selectedSpecialty = this.value;
-
-if(doctors[selectedSpecialty]){
-
-doctors[selectedSpecialty].forEach(function(doc){
-
-const option=document.createElement("option");
-
-option.value=doc;
-option.textContent=doc;
-
-doctor.appendChild(option);
-
+if(doctors[this.value]){
+doctors[this.value].forEach(d=>{
+let opt = document.createElement("option");
+opt.value = d;
+opt.textContent = d;
+doctor.appendChild(opt);
+});
+}
 });
 
+// LOAD SLOTS
+function loadSlots(){
+
+const d = doctor.value;
+const date = dateInput.value;
+
+if(!d || !date){
+slots.innerHTML = "<p class='text-danger'>Select doctor and date</p>";
+return;
 }
 
-});
+slots.innerHTML = "";
 
+const now = new Date();
+const selectedDate = new Date(date);
 
-doctor.addEventListener("change",function(){
+// BLOCK PAST DATE
+if(selectedDate < new Date(now.getFullYear(), now.getMonth(), now.getDate())){
+slots.innerHTML = "<p class='text-danger'>Past dates not allowed</p>";
+return;
+}
 
-timeSlotsDiv.innerHTML="";
+// GET SAVED DATA
+let data = JSON.parse(localStorage.getItem("appointments")) || [];
 
-const selectedDoctor=this.value;
+slotsData[d].forEach(s => {
 
-if(timeSlots[selectedDoctor]){
-
-timeSlots[selectedDoctor].forEach(function(slot){
-
-const btn=document.createElement("button");
-
+let btn = document.createElement("button");
 btn.type="button";
 btn.className="btn btn-outline-primary m-1 slot";
+btn.textContent = s;
 
-btn.textContent=slot;
+// DISABLE BOOKED
+if(data.some(a => a.doctor === d && a.date === date && a.time === s)){
+btn.disabled = true;
+btn.classList.add("btn-danger");
+}
 
+// DISABLE PAST TIME (TODAY)
+let t = convertTo24(s);
+
+if(isSameDate(selectedDate, now)){
+if(t.hour < now.getHours() || (t.hour === now.getHours() && t.min <= now.getMinutes())){
+btn.disabled = true;
+btn.classList.add("btn-secondary");
+}
+}
+
+// SELECT SLOT
 btn.onclick=function(){
-
 document.querySelectorAll(".slot").forEach(b=>b.classList.remove("active"));
-
 btn.classList.add("active");
-
 }
 
-timeSlotsDiv.appendChild(btn);
+slots.appendChild(btn);
 
 });
 
 }
 
-});
+// EVENTS
+doctor.addEventListener("change", loadSlots);
+dateInput.addEventListener("change", loadSlots);
 
+// AUTO REFRESH
+setInterval(loadSlots, 60000);
 
-document.getElementById("appointmentForm").addEventListener("submit",function(e){
+// BOOK APPOINTMENT
+document.getElementById("appointmentForm").addEventListener("submit", function(e){
 
 e.preventDefault();
 
-const selectedDoctor=doctor.value;
-const selectedDate=document.getElementById("appointmentDate").value;
-const selectedSlot=document.querySelector(".slot.active");
+const name = document.getElementById("name").value;
+const d = doctor.value;
+const date = dateInput.value;
+const slot = document.querySelector(".slot.active");
 
-if(!selectedDoctor || !selectedDate || !selectedSlot){
-
-alert("Please select doctor, date and time slot");
+if(!name || !d || !date || !slot){
+alert("Please fill all fields");
 return;
-
 }
 
-alert("Appointment booked successfully with "
-+ selectedDoctor +
-" on " + selectedDate +
-" at " + selectedSlot.textContent);
+let data = JSON.parse(localStorage.getItem("appointments")) || [];
+
+data.push({
+name: name,
+doctor: d,
+date: date,
+time: slot.textContent
+});
+
+localStorage.setItem("appointments", JSON.stringify(data));
+
+alert("Appointment Booked Successfully!");
+
+// RESET FORM
+document.getElementById("appointmentForm").reset();
+slots.innerHTML = "";
 
 });
+
+// HELPERS
+function convertTo24(time){
+let isPM = time.includes("PM");
+time = time.replace("AM","").replace("PM","");
+let parts = time.split(":");
+let h = parseInt(parts[0]);
+let m = parts[1] ? parseInt(parts[1]) : 0;
+
+if(isPM && h !== 12) h += 12;
+if(!isPM && h === 12) h = 0;
+
+return {hour:h, min:m};
+}
+
+function isSameDate(d1, d2){
+return d1.getFullYear()===d2.getFullYear() &&
+       d1.getMonth()===d2.getMonth() &&
+       d1.getDate()===d2.getDate();
+}
 
 </script>
 
 </body>
 </html>
-```
