@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard</title>
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+<style>
+body { background-color: #f4f6f9; }
+.navbar { background: #343a40; }
+.status-pending { color: #d9534f; font-weight: bold; }
+.status-completed { color: #28a745; font-weight: bold; }
+.appointment-card {
+    margin-bottom: 15px;
+    padding: 15px;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-dark">
+    <a class="btn btn-light" href="index.html">⬅ Back</a>
+    <span class="navbar-brand mx-auto">Admin Dashboard</span>
+    <button class="btn btn-danger" onclick="logout()">Logout</button>
+</nav>
+
+<div class="container mt-4">
+
+<!-- STATS -->
+<div class="row mb-4">
+<div class="col-md-4">
+<div class="card text-center p-3 bg-primary text-white">
+<h5>Total Appointments</h5>
+<p id="totalAppointments">0</p>
+</div>
+</div>
+
+<div class="col-md-4">
+<div class="card text-center p-3 bg-success text-white">
+<h5>Completed</h5>
+<p id="completedAppointments">0</p>
+</div>
+</div>
+
+<div class="col-md-4">
+<div class="card text-center p-3 bg-warning text-white">
+<h5>Pending</h5>
+<p id="pendingAppointments">0</p>
+</div>
+</div>
+</div>
+
+<!-- FILTER -->
+<div class="mb-3">
+<label>Filter by Doctor:</label>
+<select id="filterDoctor" class="form-control w-25">
+<option value="all">All Doctors</option>
+</select>
+</div>
+
+<!-- APPOINTMENTS -->
+<div id="appointmentsContainer"></div>
+
+<!-- 🔥 MESSAGES SECTION -->
+<h4 class="mt-5">Patient Messages</h4>
+<div id="messagesContainer"></div>
+
+</div>
+
+<script>
+
+// LOGIN CHECK
+if(localStorage.getItem("adminLoggedIn") !== "true"){
+    alert("Please login first!");
+    window.location.href = "admin-login.html";
+}
+
+// LOGOUT
+function logout(){
+    localStorage.removeItem("adminLoggedIn");
+    window.location.href = "admin-login.html";
+}
+
+// LOAD APPOINTMENTS
+let appointments = JSON.parse(localStorage.getItem("appointments")) || [];
+
+// ADD DEFAULT STATUS
+appointments = appointments.map(app => {
+    if(!app.status) app.status = "Pending";
+    return app;
+});
+localStorage.setItem("appointments", JSON.stringify(appointments));
+
+const container = document.getElementById("appointmentsContainer");
+const filterDoctor = document.getElementById("filterDoctor");
+let displayedIndexes = [];
+
+// POPULATE DOCTOR FILTER
+const doctors = [...new Set(appointments.map(a => a.doctor))];
+doctors.forEach(doc => {
+    const opt = document.createElement("option");
+    opt.value = doc;
+    opt.textContent = doc;
+    filterDoctor.appendChild(opt);
+});
+
+// RENDER APPOINTMENTS
+function renderAppointments(filter="all"){
+    container.innerHTML = "";
+    displayedIndexes = [];
+
+    let total=0, completed=0, pending=0;
+
+    appointments.forEach((app,index)=>{
+
+        if(filter !== "all" && app.doctor !== filter) return;
+
+        total++;
+        if(app.status === "Completed") completed++;
+        else pending++;
+
+        displayedIndexes.push(index);
+
+        const card = document.createElement("div");
+        card.className = "appointment-card";
+
+        card.innerHTML = `
+            <p><strong>Patient:</strong> ${app.name || "N/A"}</p>
+            <p><strong>Doctor:</strong> ${app.doctor}</p>
+            <p><strong>Date:</strong> ${app.date}</p>
+            <p><strong>Time:</strong> ${app.time}</p>
+            <p><strong>Status:</strong> 
+                <span class="status-${app.status.toLowerCase()}">${app.status}</span>
+            </p>
+
+            <button class="btn btn-success btn-sm mr-2"
+                onclick="markCompleted(${displayedIndexes.length-1}, '${filter}')">
+                Mark Completed
+            </button>
+
+            <button class="btn btn-danger btn-sm"
+                onclick="deleteAppointment(${displayedIndexes.length-1}, '${filter}')">
+                Delete
+            </button>
+        `;
+
+        container.appendChild(card);
+    });
+
+    document.getElementById("totalAppointments").textContent = total;
+    document.getElementById("completedAppointments").textContent = completed;
+    document.getElementById("pendingAppointments").textContent = pending;
+}
+
+// FILTER
+filterDoctor.addEventListener("change", function(){
+    renderAppointments(this.value);
+});
+
+// DELETE
+function deleteAppointment(displayedIndex, filter){
+    const realIndex = displayedIndexes[displayedIndex];
+
+    if(confirm("Delete this appointment?")){
+        appointments.splice(realIndex,1);
+        localStorage.setItem("appointments", JSON.stringify(appointments));
+        renderAppointments(filter);
+    }
+}
+
+// COMPLETE
+function markCompleted(displayedIndex, filter){
+    const realIndex = displayedIndexes[displayedIndex];
+    appointments[realIndex].status = "Completed";
+    localStorage.setItem("appointments", JSON.stringify(appointments));
+    renderAppointments(filter);
+}
+
+// INITIAL LOAD
+renderAppointments();
+
+
+// ------------------ 🔥 PATIENT MESSAGES ------------------
+
+const messagesContainer = document.getElementById("messagesContainer");
+
+let messages = JSON.parse(localStorage.getItem("contactMessages")) || [];
+
+if(messages.length === 0){
+    messagesContainer.innerHTML = "<p>No messages from patients yet.</p>";
+} else {
+
+    messages.forEach(msg => {
+
+        const card = document.createElement("div");
+        card.className = "appointment-card";
+
+        card.innerHTML = `
+            <p><strong>Name:</strong> ${msg.name}</p>
+            <p><strong>Email:</strong> ${msg.email}</p>
+            <p><strong>Message:</strong> ${msg.message}</p>
+            <p><strong>Date:</strong> ${msg.date}</p>
+        `;
+
+        messagesContainer.appendChild(card);
+
+    });
+
+}
+
+</script>
+
+</body>
+</html>
