@@ -1,82 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us - Hospital</title>
-    <link rel="stylesheet" href="main.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact Us - Hospital</title>
+<link rel="stylesheet" href="main.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <body>
 
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg nav-back fixed-top" id="mainNav">
-        <div class="container">
-            <a class="navbar-brand" href="index.html">Medical</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
-                <i class="fas fa-syringe fa-2x"></i>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="services.html">Services</a></li>
-                    <li class="nav-item"><a class="nav-link" href="specialties.html">Specialties</a></li>
-                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
-                    <li class="nav-item"><a class="nav-link btn btn-primary ml-2" href="login.html">Login</a></li>
-                </ul>
-            </div>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg nav-back fixed-top" id="mainNav">
+    <div class="container">
+        <a class="navbar-brand" href="index.html">Medical</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
+            <i class="fas fa-syringe fa-2x"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="services.html">Services</a></li>
+                <li class="nav-item"><a class="nav-link" href="specialties.html">Specialties</a></li>
+                <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                <li class="nav-item"><a class="nav-link btn btn-primary ml-2" href="login.html">Login</a></li>
+            </ul>
         </div>
-    </nav>
+    </div>
+</nav>
 
-    <!-- Page Header -->
-    <section class="page-header text-center py-5 bg-light mt-5">
-        <div class="container">
-            <h1>Contact Us</h1>
-            <p>Get in touch with our hospital team for any queries or appointments</p>
-        </div>
-    </section>
+<!-- Page Header -->
+<section class="page-header text-center py-5 bg-light mt-5">
+    <div class="container">
+        <h1>Contact Us</h1>
+        <p>Get in touch with our hospital team for any queries or appointments</p>
+    </div>
+</section>
 
-    <!-- Contact Form -->
-    <section class="py-5">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-md-8">
-                    <div class="card shadow-sm p-4">
-                        <h3 class="mb-4 text-center">Send Us a Message</h3>
-                        <form>
-                            <div class="form-group">
-                                <label>Name</label>
-                                <input type="text" class="form-control" placeholder="Your Name" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Email</label>
-                                <input type="email" class="form-control" placeholder="Your Email" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Message</label>
-                                <textarea class="form-control" rows="5" placeholder="Your Message" required></textarea>
-                            </div>
-                            <button class="btn btn-primary btn-block">Send Message</button>
-                        </form>
-                        <div class="mt-4 text-center">
-                            <p>Or call us at: <strong>+123-456-7890</strong></p>
+<!-- Contact Form -->
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow-sm p-4">
+                    <h3 class="mb-4 text-center">Send Us a Message</h3>
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input type="text" class="form-control" id="name" placeholder="Your Name" required>
                         </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" class="form-control" id="email" placeholder="Your Email" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Message</label>
+                            <textarea class="form-control" id="message" rows="5" placeholder="Your Message" required></textarea>
+                        </div>
+                        <button class="btn btn-primary btn-block" type="submit">Send Message</button>
+                    </form>
+                    <div class="mt-4 text-center">
+                        <p>Or call us at: <strong>+123-456-7890</strong></p>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- Footer -->
-    <footer class="footer py-4 mt-5 bg-light">
-        <div class="container text-center">
-            &copy; 2026 Hospital Appointment Booking System
-        </div>
-    </footer>
+<!-- Footer -->
+<footer class="footer py-4 mt-5 bg-light">
+    <div class="container text-center">
+        &copy; 2026 Hospital Appointment Booking System
+    </div>
+</footer>
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script>
+document.getElementById("contactForm").addEventListener("submit", function(e){
+    e.preventDefault();
+
+    // Get form values
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+    const message = document.getElementById("message").value;
+
+    // Load messages from localStorage
+    let messages = JSON.parse(localStorage.getItem("contactMessages")) || [];
+
+    // Add new message
+    messages.push({
+        name: name,
+        email: email,
+        message: message,
+        date: new Date().toLocaleString()
+    });
+
+    // Save back to localStorage
+    localStorage.setItem("contactMessages", JSON.stringify(messages));
+
+    alert("Your message has been sent!");
+
+    // Reset form
+    this.reset();
+});
+</script>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
 </body>
 </html>
