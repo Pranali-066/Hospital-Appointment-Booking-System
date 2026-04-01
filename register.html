@@ -49,6 +49,21 @@
                         </div>
 
                         <div class="form-group">
+                            <label>Age</label>
+                            <input type="number" class="form-control" id="age" placeholder="Enter your age" min="1" max="120" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Gender</label>
+                            <select class="form-control" id="gender" required>
+                                <option value="" disabled selected>Select your gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
                             <label>Password</label>
                             <input type="password" class="form-control" id="password" placeholder="Enter a password" required>
                         </div>
@@ -82,9 +97,11 @@ document.getElementById("registerForm").addEventListener("submit", function(e){
     const name = document.getElementById("name").value.trim();
     const email = document.getElementById("email").value.trim();
     const phone = document.getElementById("phone").value.trim();
+    const age = document.getElementById("age").value.trim();
+    const gender = document.getElementById("gender").value;
     const password = document.getElementById("password").value.trim();
 
-    if(name === "" || email === "" || phone === "" || password === ""){
+    if(name === "" || email === "" || phone === "" || age === "" || gender === "" || password === ""){
         alert("Please fill all fields");
         return;
     }
@@ -103,6 +120,8 @@ document.getElementById("registerForm").addEventListener("submit", function(e){
         name: name,
         email: email,
         phone: phone,
+        age: age,
+        gender: gender,
         password: password
     });
 
