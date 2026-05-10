@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Doctors Information</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f4f6f9;
+        color: #333;
+    }
+
+    h3 {
+        font-weight: bold;
+        color: #007bff;
+    }
+
+    .specialty-card {
+        margin-bottom: 30px;
+        border-radius: 10px;
+        border: 1px solid #e0e0e0;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        background-color: #fff;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .specialty-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+
+    .specialty-card h5 {
+        border-bottom: 2px solid #007bff;
+        padding-bottom: 5px;
+        margin-bottom: 15px;
+    }
+
+    .doctor-card {
+        margin-bottom: 15px;
+        padding: 15px;
+        border-left: 4px solid #007bff;
+        background-color: #f8f9fa;
+        border-radius: 5px;
+        transition: background-color 0.2s;
+    }
+
+    .doctor-card:hover {
+        background-color: #e9f2ff;
+    }
+
+    .doctor-card h6 {
+        font-weight: 600;
+        color: #0056b3;
+    }
+
+    .doctor-card p {
+        margin: 2px 0;
+        font-size: 0.9rem;
+    }
+
+    /* Back button styling */
+    .back-btn {
+        margin-bottom: 20px;
+    }
+
+    /* Responsive spacing */
+    @media(max-width:768px){
+        .col-md-6 {
+            margin-bottom: 20px;
+        }
+    }
+</style>
+</head>
+<body>
+
+<div class="container mt-5">
+    <!-- Back to Home Button -->
+    <a href="index.html" class="btn btn-primary back-btn">
+        &larr; Back to Home
+    </a>
+
+    <h3 class="text-center mb-4">Our Doctors</h3>
+    <div id="specialtyContainer" class="row">
+        <!-- Specialty cards will appear here -->
+    </div>
+</div>
+
+<script>
+// Doctors data with details
+const doctorsData = {
+    "Cardiology": [
+        { name: "Dr. Smith", phone: "9876543210", age: 45, email: "smith@hospital.com", degree: "MD Cardiology" },
+        { name: "Dr. Johnson", phone: "9876543211", age: 50, email: "johnson@hospital.com", degree: "DM Cardiology" }
+    ],
+    "Neurology": [
+        { name: "Dr. Brown", phone: "9876543212", age: 42, email: "brown@hospital.com", degree: "MD Neurology" },
+        { name: "Dr. Davis", phone: "9876543213", age: 48, email: "davis@hospital.com", degree: "DM Neurology" }
+    ],
+    "Orthopedics": [
+        { name: "Dr. Wilson", phone: "9876543214", age: 40, email: "wilson@hospital.com", degree: "MS Orthopedics" },
+        { name: "Dr. Lee", phone: "9876543215", age: 38, email: "lee@hospital.com", degree: "MS Orthopedics" }
+    ],
+    "Pediatrics": [
+        { name: "Dr. Taylor", phone: "9876543216", age: 35, email: "taylor@hospital.com", degree: "MD Pediatrics" },
+        { name: "Dr. Anderson", phone: "9876543217", age: 39, email: "anderson@hospital.com", degree: "MD Pediatrics" }
+    ]
+};
+
+// Render specialties and doctors
+const container = document.getElementById("specialtyContainer");
+
+for (const specialty in doctorsData) {
+    const col = document.createElement("div");
+    col.className = "col-md-6";
+
+    const card = document.createElement("div");
+    card.className = "card specialty-card p-3";
+
+    const title = document.createElement("h5");
+    title.textContent = specialty;
+    card.appendChild(title);
+
+    doctorsData[specialty].forEach(doc => {
+        const docCard = document.createElement("div");
+        docCard.className = "doctor-card";
+        docCard.innerHTML = `
+            <h6>${doc.name}</h6>
+            <p><strong>Specialty:</strong> ${specialty}</p>
+            <p><strong>Phone:</strong> ${doc.phone}</p>
+            <p><strong>Age:</strong> ${doc.age}</p>
+            <p><strong>Email:</strong> ${doc.email}</p>
+            <p><strong>Degree:</strong> ${doc.degree}</p>
+        `;
+        card.appendChild(docCard);
+    });
+
+    col.appendChild(card);
+    container.appendChild(col);
+}
+</script>
+
+</body>
+</html>

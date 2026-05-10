@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Doctors Details</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<style>
+    body { background-color: #f7f7f7; }
+    .card-doctor { margin-bottom: 20px; }
+    .card-doctor h5 { color: #007BFF; }
+</style>
+</head>
+<body>
+
+<nav class="navbar navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="index.html">Medical</a>
+    </div>
+</nav>
+
+<div class="container mt-5">
+    <h3 class="text-center mb-4" id="specialtyTitle">Doctors</h3>
+    <div class="row" id="doctorsContainer">
+        <!-- Doctor cards will appear here -->
+    </div>
+</div>
+
+<script>
+// Hardcoded doctors data by specialty
+const doctorsData = {
+    cardiology:[
+        {name:"Dr. Smith", email:"smith@hospital.com", phone:"9876543210"},
+        {name:"Dr. Johnson", email:"johnson@hospital.com", phone:"9876543211"}
+    ],
+    neurology:[
+        {name:"Dr. Brown", email:"brown@hospital.com", phone:"9876543212"},
+        {name:"Dr. Davis", email:"davis@hospital.com", phone:"9876543213"}
+    ],
+    orthopedics:[
+        {name:"Dr. Wilson", email:"wilson@hospital.com", phone:"9876543214"},
+        {name:"Dr. Lee", email:"lee@hospital.com", phone:"9876543215"}
+    ],
+    pulmonology:[
+        {name:"Dr. Clark", email:"clark@hospital.com", phone:"9876543216"}
+    ],
+    general:[
+        {name:"Dr. Taylor", email:"taylor@hospital.com", phone:"9876543217"}
+    ],
+    pediatrics:[
+        {name:"Dr. Anderson", email:"anderson@hospital.com", phone:"9876543218"}
+    ]
+};
+
+// Get specialty from URL query (?specialty=cardiology)
+const params = new URLSearchParams(window.location.search);
+const specialty = params.get("specialty") || "cardiology";
+
+// Update page title
+document.getElementById("specialtyTitle").textContent = 
+    specialty.charAt(0).toUpperCase() + specialty.slice(1) + " Doctors";
+
+// Render doctors cards
+const container = document.getElementById("doctorsContainer");
+const doctors = doctorsData[specialty.toLowerCase()] || [];
+
+doctors.forEach(doc => {
+    const div = document.createElement("div");
+    div.className = "col-md-4";
+    div.innerHTML = `
+        <div class="card card-doctor p-3">
+            <h5 class="card-title">${doc.name}</h5>
+            <p class="card-text"><strong>Email:</strong> ${doc.email}</p>
+            <p class="card-text"><strong>Phone:</strong> ${doc.phone}</p>
+        </div>
+    `;
+    container.appendChild(div);
+});
+</script>
+
+</body>
+</html>
