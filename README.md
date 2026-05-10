@@ -313,6 +313,11 @@ Started learning Flask
 Next Plan:
 Setup backend
 GAP
-31 March 2026:
-Working on improving backend connection
-Trying to make booking system fully functional
+31 march 2026
+Enhanced appointment booking functionality using JavaScript. Improved user interaction for selecting doctor and time slots.
+08 April 2026
+Testing of complete frontend system. Verified login, doctor list, and appointment booking flow.
+15 April 2026
+Testing of localStorage-based booking system completed.
+25 April 2026
+Final project completed using HTML, CSS, JavaScript, and localStorage.
