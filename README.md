@@ -259,7 +259,7 @@ Patient Appointment and Scheduling System,” IARJSET, 2017.
 
 
 
-📘 Updated Logbook (With Your Real Start Date)
+📘 Updated Logbook
 07 February 2026
 Finalized project idea (Hospital Appointment Booking System)
 Discussed with project guide
