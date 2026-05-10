@@ -1,16 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Book Appointment</title>
 
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<title>Hospital Appointment Booking</title>
+
+<link rel="stylesheet"
+href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 
 <style>
+body{
+    background:#f5f5f5;
+}
+
+.card{
+    border-radius:10px;
+}
+
 .slot.active{
-    background-color: green;
-    color: white;
+    background:green;
+    color:white;
+}
+
+.slot{
+    min-width:80px;
 }
 </style>
 
@@ -18,25 +33,24 @@
 
 <body>
 
-<!-- 🔥 NAVBAR WITH BACK BUTTON -->
 <nav class="navbar navbar-dark bg-dark">
-    <a href="index.html" class="btn btn-light">⬅ Back to Home</a>
-    <span class="navbar-brand mx-auto">Hospital Booking</span>
+<a href="index.html" class="btn btn-light">⬅ Back to Home</a>
+<span class="navbar-brand mx-auto">Hospital Booking</span>
 </nav>
 
 <div class="container mt-5">
 
-<h3 class="text-center">Book Appointment</h3>
+<h3 class="text-center mb-4">Book Appointment</h3>
 
 <div class="row justify-content-center">
-<div class="col-md-6">
+<div class="col-md-7">
 
-<div class="card p-4">
+<div class="card p-4 shadow">
 
 <form id="appointmentForm">
 
-<!-- ✅ PATIENT NAME -->
-<input type="text" id="name" class="form-control mb-3" placeholder="Enter Patient Name" required>
+<input type="text" id="name" class="form-control mb-3"
+placeholder="Enter Patient Name" required>
 
 <select id="specialty" class="form-control mb-3" required>
 <option value="">Select Specialty</option>
@@ -54,19 +68,21 @@
 
 <div id="slots"></div>
 
-<button class="btn btn-success btn-block mt-3">Book Appointment</button>
+<button class="btn btn-success btn-block mt-3">
+Book Appointment
+</button>
 
 </form>
 
 </div>
-</div>
-</div>
 
+</div>
+</div>
 </div>
 
 <script>
 
-// DATA
+// DOCTORS
 const doctors = {
 cardiology:["Dr. Smith","Dr. Johnson"],
 neurology:["Dr. Brown","Dr. Davis"],
@@ -74,94 +90,94 @@ orthopedics:["Dr. Wilson","Dr. Lee"],
 pediatrics:["Dr. Taylor","Dr. Anderson"]
 };
 
+// SLOTS
 const slotsData = {
-"Dr. Smith":["9AM","10AM","11AM","12PM"],
-"Dr. Johnson":["1PM","2PM","3PM"],
-"Dr. Brown":["9:30AM","10:30AM","11:30AM"],
-"Dr. Davis":["12PM","1PM","2PM"],
-"Dr. Wilson":["9AM","10AM","11AM"],
-"Dr. Lee":["12PM","1PM","2PM"],
-"Dr. Taylor":["9:30AM","10:30AM"],
-"Dr. Anderson":["11:30AM","12:30PM"]
+
+"Dr. Smith":["9AM","10AM","11AM","12PM","2PM","3PM","4PM","5PM","6PM","7PM","8PM","9PM"],
+
+"Dr. Johnson":["10AM","11AM","1PM","2PM","3PM","4PM","5PM","6PM","7PM","8PM"],
+
+"Dr. Brown":["9:30AM","10:30AM","11:30AM","1:30PM","2:30PM","4:30PM","6:30PM","8:30PM"],
+
+"Dr. Davis":["12PM","1PM","2PM","3PM","5PM","6PM","7PM","8PM"],
+
+"Dr. Wilson":["9AM","10AM","11AM","4PM","6PM","7PM","9PM"],
+
+"Dr. Lee":["12PM","1PM","2PM","5PM","6PM","8PM"],
+
+"Dr. Taylor":["9:30AM","10:30AM","3PM","5PM","7PM"],
+
+"Dr. Anderson":["11:30AM","12:30PM","4PM","6PM","8PM"]
+
 };
 
+// ELEMENTS
 const specialty = document.getElementById("specialty");
 const doctor = document.getElementById("doctor");
 const dateInput = document.getElementById("date");
 const slots = document.getElementById("slots");
 
-// BLOCK PAST DATE
+// MIN DATE TODAY
 const today = new Date().toISOString().split("T")[0];
-dateInput.setAttribute("min", today);
+dateInput.min = today;
 
 // LOAD DOCTORS
 specialty.addEventListener("change", function(){
+
 doctor.innerHTML = '<option value="">Select Doctor</option>';
 slots.innerHTML = "";
 
-if(doctors[this.value]){
 doctors[this.value].forEach(d=>{
 let opt = document.createElement("option");
 opt.value = d;
 opt.textContent = d;
 doctor.appendChild(opt);
 });
-}
+
 });
 
-// LOAD SLOTS
+// LOAD SLOTS (NO TIME FILTER = ALL VISIBLE)
+doctor.addEventListener("change", loadSlots);
+dateInput.addEventListener("change", loadSlots);
+
 function loadSlots(){
 
 const d = doctor.value;
 const date = dateInput.value;
+
+slots.innerHTML = "";
 
 if(!d || !date){
 slots.innerHTML = "<p class='text-danger'>Select doctor and date</p>";
 return;
 }
 
-slots.innerHTML = "";
-
-const now = new Date();
-const selectedDate = new Date(date);
-
-// BLOCK PAST DATE
-if(selectedDate < new Date(now.getFullYear(), now.getMonth(), now.getDate())){
-slots.innerHTML = "<p class='text-danger'>Past dates not allowed</p>";
-return;
-}
-
-// GET SAVED DATA
 let data = JSON.parse(localStorage.getItem("appointments")) || [];
 
-slotsData[d].forEach(s => {
+slotsData[d].forEach(s=>{
 
 let btn = document.createElement("button");
-btn.type="button";
-btn.className="btn btn-outline-primary m-1 slot";
+btn.type = "button";
+btn.className = "btn btn-outline-primary m-1 slot";
 btn.textContent = s;
 
-// DISABLE BOOKED
-if(data.some(a => a.doctor === d && a.date === date && a.time === s)){
+// disable booked slot
+if(data.some(a =>
+a.doctor === d &&
+a.date === date &&
+a.time === s
+)){
 btn.disabled = true;
+btn.classList.remove("btn-outline-primary");
 btn.classList.add("btn-danger");
 }
 
-// DISABLE PAST TIME (TODAY)
-let t = convertTo24(s);
-
-if(isSameDate(selectedDate, now)){
-if(t.hour < now.getHours() || (t.hour === now.getHours() && t.min <= now.getMinutes())){
-btn.disabled = true;
-btn.classList.add("btn-secondary");
-}
-}
-
-// SELECT SLOT
-btn.onclick=function(){
-document.querySelectorAll(".slot").forEach(b=>b.classList.remove("active"));
+// select slot
+btn.onclick = function(){
+document.querySelectorAll(".slot")
+.forEach(b=>b.classList.remove("active"));
 btn.classList.add("active");
-}
+};
 
 slots.appendChild(btn);
 
@@ -169,15 +185,9 @@ slots.appendChild(btn);
 
 }
 
-// EVENTS
-doctor.addEventListener("change", loadSlots);
-dateInput.addEventListener("change", loadSlots);
-
-// AUTO REFRESH
-setInterval(loadSlots, 60000);
-
 // BOOK APPOINTMENT
-document.getElementById("appointmentForm").addEventListener("submit", function(e){
+document.getElementById("appointmentForm")
+.addEventListener("submit", function(e){
 
 e.preventDefault();
 
@@ -194,41 +204,20 @@ return;
 let data = JSON.parse(localStorage.getItem("appointments")) || [];
 
 data.push({
-name: name,
-doctor: d,
-date: date,
-time: slot.textContent
+name:name,
+doctor:d,
+date:date,
+time:slot.textContent
 });
 
 localStorage.setItem("appointments", JSON.stringify(data));
 
 alert("Appointment Booked Successfully!");
 
-// RESET FORM
 document.getElementById("appointmentForm").reset();
 slots.innerHTML = "";
 
 });
-
-// HELPERS
-function convertTo24(time){
-let isPM = time.includes("PM");
-time = time.replace("AM","").replace("PM","");
-let parts = time.split(":");
-let h = parseInt(parts[0]);
-let m = parts[1] ? parseInt(parts[1]) : 0;
-
-if(isPM && h !== 12) h += 12;
-if(!isPM && h === 12) h = 0;
-
-return {hour:h, min:m};
-}
-
-function isSameDate(d1, d2){
-return d1.getFullYear()===d2.getFullYear() &&
-       d1.getMonth()===d2.getMonth() &&
-       d1.getDate()===d2.getDate();
-}
 
 </script>
 
