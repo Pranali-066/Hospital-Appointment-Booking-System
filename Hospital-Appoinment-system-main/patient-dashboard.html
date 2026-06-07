@@ -13,6 +13,8 @@ body { background-color: #f4f6f9; }
 .status-pending { color: #d9534f; font-weight: bold; }
 .status-completed { color: #28a745; font-weight: bold; }
 .status-approved { color: #ffc107; font-weight: bold; }
+.status-cancelled { color: #6c757d; font-weight: bold; }
+
 .appointment-card {
     margin-bottom: 15px;
     padding: 15px;
@@ -25,7 +27,6 @@ body { background-color: #f4f6f9; }
 
 <body>
 
-<!-- NAVBAR -->
 <nav class="navbar navbar-dark">
     <a class="btn btn-light" href="index.html">⬅ Back</a>
     <span class="navbar-brand mx-auto">Patient Dashboard</span>
@@ -42,63 +43,89 @@ body { background-color: #f4f6f9; }
 </div>
 
 <script>
-// --- LOGIN CHECK ---
+
+// LOGIN
 let patientName = localStorage.getItem("loggedInPatient");
+
 if(!patientName){
     patientName = prompt("Enter your name to view your appointments:");
     if(patientName){
         localStorage.setItem("loggedInPatient", patientName);
     } else {
-        alert("Name required to view dashboard!");
+        alert("Name required!");
         window.location.href = "index.html";
     }
 }
+
 document.getElementById("patientNameDisplay").textContent = patientName;
 
-// --- LOGOUT ---
+// LOGOUT
 function logout(){
     localStorage.removeItem("loggedInPatient");
     window.location.href = "index.html";
 }
 
-// --- RENDER APPOINTMENTS ---
+// CANCEL APPOINTMENT ⭐ NEW FEATURE
+function cancelAppointment(index){
+    let appointments = JSON.parse(localStorage.getItem("appointments")) || [];
+
+    if(confirm("Do you want to cancel this appointment?")){
+        appointments[index].status = "Cancelled";
+        localStorage.setItem("appointments", JSON.stringify(appointments));
+        renderAppointmentsForPatient();
+    }
+}
+
+// RENDER
 function renderAppointmentsForPatient(){
+
     const container = document.getElementById("appointmentsContainer");
     let appointments = JSON.parse(localStorage.getItem("appointments")) || [];
 
-    // Filter only this patient's appointments
-    let patientAppointments = appointments.filter(app => app.name === patientName);
     container.innerHTML = "";
+
+    let patientAppointments = appointments
+        .map((app, index) => ({ ...app, index }))
+        .filter(app => app.name === patientName);
 
     if(patientAppointments.length === 0){
         container.innerHTML = "<p>No appointments yet.</p>";
+        return;
     }
 
     patientAppointments.forEach(app => {
+
         const card = document.createElement("div");
         card.className = "appointment-card";
+
         card.innerHTML = `
             <p><strong>Doctor:</strong> ${app.doctor}</p>
             <p><strong>Date:</strong> ${app.date}</p>
             <p><strong>Time:</strong> ${app.time}</p>
-            <p><strong>Status:</strong> <span class="status-${app.status.toLowerCase()}">${app.status}</span></p>
+
+            <p><strong>Status:</strong> 
+                <span class="status-${app.status.toLowerCase()}">${app.status}</span>
+            </p>
+
             ${app.adminMessage ? `<p><strong>Admin Message:</strong> ${app.adminMessage}</p>` : ""}
+
+            ${app.status !== "Cancelled" && app.status !== "Completed"
+                ? `<button class="btn btn-danger btn-sm" onclick="cancelAppointment(${app.index})">
+                    Cancel Appointment
+                   </button>`
+                : ""
+            }
         `;
+
         container.appendChild(card);
     });
 }
 
-// --- INITIAL LOAD ---
+// AUTO REFRESH
 renderAppointmentsForPatient();
-
-// --- AUTO-REFRESH EVERY 5 SECONDS ---
 setInterval(renderAppointmentsForPatient, 5000);
 
 </script>
-
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
 </body>
 </html>
