@@ -10,9 +10,12 @@
 <style>
 body { background-color: #f4f6f9; }
 .navbar { background: #343a40; }
+
 .status-pending { color: #d9534f; font-weight: bold; }
 .status-completed { color: #28a745; font-weight: bold; }
-.status-approved { color: #ffc107; font-weight: bold; } /* New approved status */
+.status-approved { color: #ffc107; font-weight: bold; }
+.status-cancelled { color: #6c757d; font-weight: bold; }
+
 .appointment-card {
     margin-bottom: 15px;
     padding: 15px;
@@ -36,26 +39,35 @@ body { background-color: #f4f6f9; }
 
 <!-- STATS -->
 <div class="row mb-4">
-<div class="col-md-4">
+
+<div class="col-md-3">
 <div class="card text-center p-3 bg-primary text-white">
-<h5>Total Appointments</h5>
+<h5>Total</h5>
 <p id="totalAppointments">0</p>
 </div>
 </div>
 
-<div class="col-md-4">
+<div class="col-md-3">
 <div class="card text-center p-3 bg-success text-white">
 <h5>Completed</h5>
 <p id="completedAppointments">0</p>
 </div>
 </div>
 
-<div class="col-md-4">
+<div class="col-md-3">
 <div class="card text-center p-3 bg-warning text-white">
 <h5>Pending</h5>
 <p id="pendingAppointments">0</p>
 </div>
 </div>
+
+<div class="col-md-3">
+<div class="card text-center p-3 bg-secondary text-white">
+<h5>Cancelled</h5>
+<p id="cancelledAppointments">0</p>
+</div>
+</div>
+
 </div>
 
 <!-- FILTER -->
@@ -69,7 +81,7 @@ body { background-color: #f4f6f9; }
 <!-- APPOINTMENTS -->
 <div id="appointmentsContainer"></div>
 
-<!-- 🔥 MESSAGES SECTION -->
+<!-- MESSAGES -->
 <h4 class="mt-5">Patient Messages</h4>
 <div id="messagesContainer"></div>
 
@@ -92,7 +104,7 @@ function logout(){
 // LOAD APPOINTMENTS
 let appointments = JSON.parse(localStorage.getItem("appointments")) || [];
 
-// ADD DEFAULT STATUS
+// DEFAULT STATUS
 appointments = appointments.map(app => {
     if(!app.status) app.status = "Pending";
     return app;
@@ -103,7 +115,7 @@ const container = document.getElementById("appointmentsContainer");
 const filterDoctor = document.getElementById("filterDoctor");
 let displayedIndexes = [];
 
-// POPULATE DOCTOR FILTER
+// DOCTOR FILTER
 const doctors = [...new Set(appointments.map(a => a.doctor))];
 doctors.forEach(doc => {
     const opt = document.createElement("option");
@@ -112,20 +124,28 @@ doctors.forEach(doc => {
     filterDoctor.appendChild(opt);
 });
 
-// RENDER APPOINTMENTS
+// RENDER
 function renderAppointments(filter="all"){
     container.innerHTML = "";
     displayedIndexes = [];
 
-    let total=0, completed=0, pending=0;
+    let total=0, completed=0, pending=0, cancelled=0;
 
     appointments.forEach((app,index)=>{
 
         if(filter !== "all" && app.doctor !== filter) return;
 
         total++;
-        if(app.status === "Completed") completed++;
-        else pending++;
+
+        if(app.status === "Completed"){
+            completed++;
+        }
+        else if(app.status === "Cancelled"){
+            cancelled++;
+        }
+        else{
+            pending++;
+        }
 
         displayedIndexes.push(index);
 
@@ -137,6 +157,7 @@ function renderAppointments(filter="all"){
             <p><strong>Doctor:</strong> ${app.doctor}</p>
             <p><strong>Date:</strong> ${app.date}</p>
             <p><strong>Time:</strong> ${app.time}</p>
+
             <p><strong>Status:</strong> 
                 <span class="status-${app.status.toLowerCase()}">${app.status}</span>
             </p>
@@ -148,7 +169,12 @@ function renderAppointments(filter="all"){
 
             <button class="btn btn-success btn-sm mr-2"
                 onclick="markCompleted(${displayedIndexes.length-1}, '${filter}')">
-                Mark Completed
+                Completed
+            </button>
+
+            <button class="btn btn-secondary btn-sm mr-2"
+                onclick="markCancelled(${displayedIndexes.length-1}, '${filter}')">
+                Cancelled
             </button>
 
             <button class="btn btn-danger btn-sm"
@@ -163,6 +189,7 @@ function renderAppointments(filter="all"){
     document.getElementById("totalAppointments").textContent = total;
     document.getElementById("completedAppointments").textContent = completed;
     document.getElementById("pendingAppointments").textContent = pending;
+    document.getElementById("cancelledAppointments").textContent = cancelled;
 }
 
 // FILTER
@@ -181,7 +208,7 @@ function deleteAppointment(displayedIndex, filter){
     }
 }
 
-// COMPLETE
+// COMPLETED
 function markCompleted(displayedIndex, filter){
     const realIndex = displayedIndexes[displayedIndex];
     appointments[realIndex].status = "Completed";
@@ -197,22 +224,26 @@ function markApproved(displayedIndex, filter){
     renderAppointments(filter);
 }
 
+// CANCELLED
+function markCancelled(displayedIndex, filter){
+    const realIndex = displayedIndexes[displayedIndex];
+    appointments[realIndex].status = "Cancelled";
+    localStorage.setItem("appointments", JSON.stringify(appointments));
+    renderAppointments(filter);
+}
+
 // INITIAL LOAD
 renderAppointments();
 
 
-// ------------------ 🔥 PATIENT MESSAGES ------------------
-
+// MESSAGES
 const messagesContainer = document.getElementById("messagesContainer");
-
 let messages = JSON.parse(localStorage.getItem("contactMessages")) || [];
 
 if(messages.length === 0){
     messagesContainer.innerHTML = "<p>No messages from patients yet.</p>";
 } else {
-
     messages.forEach(msg => {
-
         const card = document.createElement("div");
         card.className = "appointment-card";
 
@@ -224,10 +255,13 @@ if(messages.length === 0){
         `;
 
         messagesContainer.appendChild(card);
-
     });
-
 }
+
+</script>
+
+</body>
+</html>
 
 </script>
 
